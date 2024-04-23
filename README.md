@@ -12,10 +12,12 @@ pip install .
 from the project folder, run 
 
 ```
-python lenses_experiments\main.py "EleutherAI/pythia-12b-deduped"
+cd lenses_experiments
+python main.py "EleutherAI/pythia-12b-deduped"
 ```
 or for a smaller model
 
 ```
-python lenses_experiments\main.py "EleutherAI/pythia-410m-deduped"
+cd lenses_experiments
+python main.py "EleutherAI/pythia-410m-deduped"
 ```
