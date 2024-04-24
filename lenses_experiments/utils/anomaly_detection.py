@@ -105,7 +105,8 @@ class NewLens:
             return (cache_to_patch.unsqueeze(1), output[1])
         
         if(layer_index == 0):
-            out = self._model(inputs_embeds = cache_to_patch.unsqueeze(1))
+            with torch.no_grad():
+                out = self._model(inputs_embeds = cache_to_patch.unsqueeze(1))
             return out.logits.squeeze()
         
         #layer_index > 0, so cache_to_patch is a hidden state and not an embedding
