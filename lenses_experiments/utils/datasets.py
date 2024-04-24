@@ -3,19 +3,16 @@ from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 import random
 
-BATCH_SIZE = 32
-
-
 class Loader:
-    def __init__(self, dataset_name, dataset: DatasetDict, device: str, tokenizer : AutoTokenizer) -> None:
+    def __init__(self, dataset_name, dataset: DatasetDict, device: str, tokenizer : AutoTokenizer, batch_size: int) -> None:
         self._dataset_name = dataset_name
 
         collate_fn_object = CollateFns(device, tokenizer, dataset_name=dataset_name)
 
         self._loader_normal = DataLoader(dataset=dataset['validation'], 
-                    collate_fn=collate_fn_object.collate_fn_normal, batch_size=BATCH_SIZE, shuffle=False)
+                    collate_fn=collate_fn_object.collate_fn_normal, batch_size=batch_size, shuffle=False)
         self._loader_injected = DataLoader(dataset=dataset['validation'],
-                    collate_fn=collate_fn_object.collate_fn_injected, batch_size=BATCH_SIZE, shuffle=False)
+                    collate_fn=collate_fn_object.collate_fn_injected, batch_size=batch_size, shuffle=False)
 
     @property
     def loader_normal(self):

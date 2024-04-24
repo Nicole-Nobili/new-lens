@@ -17,7 +17,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     #"EleutherAI/pythia-410m-deduped"
     parser.add_argument('model_name', type=str, help="Model name")
+    parser.add_argument('batch_size', type=int, default=32, help="Batch size")
     args = parser.parse_args()
+
+    logger.info(f"Model name: {args.model_name}")
+    logger.info(f"Batch size: {args.batch_size}")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"Using device: {device}")
@@ -29,7 +33,7 @@ if __name__ == '__main__':
 
     dataset = load_dataset("allenai/ai2_arc", "ARC-Easy")
 
-    loader = Loader("allenai/ai2_arc", dataset, model.device, tokenizer)
+    loader = Loader("allenai/ai2_arc", dataset, model.device, tokenizer, args.batch_size)
 
     logger.info("Extracting features for Tuned Lens...")
     

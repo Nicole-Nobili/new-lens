@@ -29,6 +29,8 @@ def extract_trajectory_anomaly(dataloader: DataLoader, model: AutoModelForCausal
     n_batches = len(dataloader)
     features = []
 
+    logger.debug(f"CUDA memory: total available: {torch.cuda.get_device_properties(0).total_memory}, reserved: {torch.cuda.memory_reserved(0)}, allocated: {torch.cuda.memory_allocated(0)}")
+
     for batch in tqdm(dataloader):
         # Unpack the batch
         _, encoded_prompt, encoded_labels, correct_encoded_labels = batch
