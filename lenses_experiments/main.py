@@ -1,5 +1,6 @@
 
 import argparse
+import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from tuned_lens.nn.lenses import TunedLens
 from datasets import load_dataset
@@ -18,9 +19,11 @@ if __name__ == '__main__':
     parser.add_argument('model_name', type=str, help="Model name")
     args = parser.parse_args()
 
-    model = AutoModelForCausalLM.from_pretrained(args.model_name)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    logger.info(f"Using device: {device}")
+    model = AutoModelForCausalLM.from_pretrained(args.model_name).to(device)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
-    tuned_lens = TunedLens.from_model_and_pretrained(model)
+    tuned_lens = TunedLens.from_model_and_pretrained(model).to(device)
     new_lens = NewLens(model)
     tokenizer.pad_token = tokenizer.eos_token
 

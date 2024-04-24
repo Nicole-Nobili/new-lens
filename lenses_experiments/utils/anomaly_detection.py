@@ -1,5 +1,4 @@
 
-from functools import partial
 import random
 import numpy as np
 from sklearn import metrics
@@ -10,13 +9,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 from tuned_lens.nn.lenses import TunedLens, LogitLens
 from torch.utils.data import DataLoader
-from datasets import load_dataset
-from typing import Counter
 from tqdm import tqdm
 from typing import Union
-from transformer_lens.hook_points import (
-    HookPoint,
-)
 
 logger = get_logger(name = __name__)
 
@@ -114,8 +108,9 @@ class NewLens:
         
         #layer_index > 0, so cache_to_patch is a hidden state and not an embedding
         handle = self._model.gpt_neox.layers[layer_index - 1].register_forward_hook(hook)
-        fake_inputs = torch.zeros(n_batch, 1, device="cpu").int() #patching with batch x position long 1
-        out = self._model(input_ids = fake_inputs)
+        fake_inputs = torch.zeros(n_batch, 1, device="cpu").int().to(self._model.device) #patching with batch x position long 1
+        with torch.no_grad():
+            out = self._model(input_ids = fake_inputs)
         #assert torch.allclose(out.hidden_states[layer_index], output[0] of the hook, atol=1e-4)
         handle.remove()
         return out.logits.squeeze()
