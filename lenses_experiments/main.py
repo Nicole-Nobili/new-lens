@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"Using device: {device}")
-    model = AutoModelForCausalLM.from_pretrained(args.model_name).to(device)
+    model = AutoModelForCausalLM.from_pretrained(args.model_name, load_in_8bit = True, low_cpu_mem_usage = True)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
     tuned_lens = TunedLens.from_model_and_pretrained(model).to(device)
     new_lens = NewLens(model)

@@ -68,6 +68,7 @@ def extract_trajectory_anomaly(dataloader: DataLoader, model: AutoModelForCausal
             logger.debug(f"correct answer ratio for this batch: {correct_batch}")
 
             features.append(traj_log_probs_filtered.flatten(start_dim=1))
+        
 
     overall_accuracy = correct_sum / n_batches
     logger.debug(f"Overall correct answer ratio: {overall_accuracy}")
