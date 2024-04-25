@@ -50,6 +50,7 @@ if __name__ == '__main__':
         f.write(f"LOF ROC:\n{mi_lof:.2f}\\;({lo_lof:.2f}, {hi_lof:.2f})\n")
         f.write(f"Isolation Forest ROC:\n{mi_if:.2f}\\;({lo_if:.2f}, {hi_if:.2f})")
 
+    
     logger.info("Extracting features for New Lens...")
     
     normal_features = extract_trajectory_anomaly(loader.loader_normal, model, tokenizer, new_lens)
@@ -64,3 +65,4 @@ if __name__ == '__main__':
         f.write(f"LOF accuracy: {lof_acc}\n")
         f.write(f"LOF ROC:\n{mi_lof:.2f}\\;({lo_lof:.2f}, {hi_lof:.2f})\n")
         f.write(f"Isolation Forest ROC:\n{mi_if:.2f}\\;({lo_if:.2f}, {hi_if:.2f})")
+    
